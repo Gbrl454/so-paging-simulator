@@ -4,6 +4,7 @@ module br.gbrl.sopagingsimulator {
 
     requires org.controlsfx.controls;
     requires net.synedra.validatorfx;
+    requires java.desktop;
 
     opens br.gbrl.sopagingsimulator to javafx.fxml;
     exports br.gbrl.sopagingsimulator;
