@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Main extends javafx.application.Application {
     private static final ArrayList<OnChangeScreen> listeners = new ArrayList<>();
     private static final String TITLE_BASE = "Unifor - Sistemas Operacionais - ";
+    public static Views currentView =null;
     private static Stage stage;
 
     public static void showErrorPopup(String title, String message) {
@@ -21,11 +22,16 @@ public class Main extends javafx.application.Application {
     }
 
     public static void changeViews(Views view) {
-        stage.setScene(view.getScene());
-        stage.setTitle(TITLE_BASE + view.getTitle());
-        stage.setX((Toolkit.getDefaultToolkit().getScreenSize().getWidth() - view.getWidth()) / 4);
-        stage.setY((Toolkit.getDefaultToolkit().getScreenSize().getHeight() - view.getHeight()) / 2);
-        notfifyListeners(view);
+        currentView = view;
+        stage.setScene(currentView.getScene());
+        stage.setTitle(TITLE_BASE + currentView.getTitle());
+        stage.setX((Toolkit.getDefaultToolkit().getScreenSize().getWidth() - currentView.getWidth()) / 4);
+        stage.setY((Toolkit.getDefaultToolkit().getScreenSize().getHeight() - currentView.getHeight()) / 2);
+        notfifyListeners(currentView);
+    }
+
+    public static void addOnChageScreenListener(OnChangeScreen newListener) {
+        listeners.add(newListener);
     }
 
     public static void main(String[] args) {
@@ -46,8 +52,8 @@ public class Main extends javafx.application.Application {
             stage.close();
         });
 
-        stageS.setTitle(TITLE_BASE + Views.INITIAL_VIEW.getTitle());
-        stageS.setScene(Views.INITIAL_VIEW.getScene());
+
+        changeViews(Views.INITIAL_VIEW);
         stageS.show();
     }
 
