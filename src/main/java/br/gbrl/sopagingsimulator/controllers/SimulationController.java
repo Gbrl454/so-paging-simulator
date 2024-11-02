@@ -8,6 +8,7 @@ import br.gbrl.sopagingsimulator.dtos.AlgorithmReportsDTO;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +16,17 @@ import java.util.List;
 public class SimulationController {
     @FXML
     private PieChart chartTime;
+
     @FXML
     private BarChart chartLackOfPages;
 
     @FXML
+    private Text txtInfo;
+
+    @FXML
     protected void initialize() {
         Main.addOnChageScreenListener((newScreen) -> {
-            if (Main.currentView.equals(Views.SIMULATION_VIEW)) {
+            if (Main.CURRENT_VIEW.equals(Views.SIMULATION_VIEW)) {
                 System.out.println(Cache.algorithmSimulationRequest);
 
                 // TODO execultar algoritimos
@@ -33,13 +38,20 @@ public class SimulationController {
                 AlgorithmReportsDTO algorithmReports = new AlgorithmReportsDTO(algorithmReportList);
                 loadChartLackOfPages(algorithmReports);
                 loadChartTime(algorithmReports);
+                txtInfo.setText("Tempo total de execução: " + converterTime(algorithmReports.executionTime()) + " | Quantidade total de falta de página: " + algorithmReports.lackOfPages());
             }
         });
     }
 
     @FXML
-    protected void onSimulateButtonClick() {
-        System.out.println("AAAAAAAAAAA");
+    protected void goBack() {
+        Main.changeViews(Views.INITIAL_VIEW);
+    }
+
+    private String converterTime(long milissegundos) {
+        if (milissegundos >= 60000) return (milissegundos / 60000) + "min";
+        else if (milissegundos >= 1000) return (milissegundos / 1000) + "s";
+        else return milissegundos + "ms";
     }
 
     private void loadChartLackOfPages(AlgorithmReportsDTO algorithmReports) {
@@ -55,6 +67,6 @@ public class SimulationController {
 
     private void loadChartTime(AlgorithmReportsDTO algorithmReports) {
         chartTime.setTitle("Tempo de execução");
-        chartTime.setData(FXCollections.observableArrayList(algorithmReports.algorithmReportList().stream().map(it -> new PieChart.Data(it.name(), it.executionTime())).toList()));
+        chartTime.setData(FXCollections.observableArrayList(algorithmReports.algorithmReportList().stream().map(it -> new PieChart.Data(it.name() + " (" + converterTime(it.executionTime()) + ")", it.executionTime())).toList()));
     }
 }

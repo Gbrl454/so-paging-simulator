@@ -1,19 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      spacing="20.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="br.gbrl.sopagingsimulator.controllers.InitialController">
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="720.0" spacing="20.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.gbrl.sopagingsimulator.controllers.InitialController">
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-    <CheckBox fx:id="cbFifo" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-              minWidth="-Infinity" mnemonicParsing="false" text="FIFO" VBox.vgrow="ALWAYS"/>
-    <CheckBox fx:id="cbNru" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-              minWidth="-Infinity" mnemonicParsing="false" text="NRU" VBox.vgrow="ALWAYS"/>
-    <CheckBox fx:id="cbClock" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-              minWidth="-Infinity" mnemonicParsing="false" text="CLOCK" VBox.vgrow="ALWAYS"/>
-    <Button focusTraversable="false" onAction="#onSimulateButtonClick" text="Simular"/>
+   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Selecione os algoritmos para a simulação" textAlignment="CENTER">
+      <font>
+         <Font size="25.0" />
+      </font>
+   </Text>
+    <CheckBox fx:id="cbFifo" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" text="FIFO" VBox.vgrow="ALWAYS" />
+    <CheckBox fx:id="cbNru" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" text="NRU" VBox.vgrow="ALWAYS" />
+    <CheckBox fx:id="cbClock" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" text="CLOCK" VBox.vgrow="ALWAYS" />
+   <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="15.0" VBox.vgrow="ALWAYS">
+      <children>
+         <TextArea fx:id="txtPages" focusTraversable="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" promptText="Preencha com números de páginas" text="5 1 5 9 5 5 9 9 5 3 9 5 7 7 3 6 9 4 7 9 3 7 4 8 5 3 4 6 2 7 8 2 1 4 1 4 3 3 7 7 3 7 2 6 7 4 4 6 2 " HBox.hgrow="ALWAYS" />
+         <TextField fx:id="txtQPag" alignment="CENTER" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" promptText="Quantidade de páginas" text="5" />
+      </children>
+   </HBox>
+    <Button focusTraversable="false" onAction="#onSimulateButtonClick" text="Simular" />
 </VBox>
