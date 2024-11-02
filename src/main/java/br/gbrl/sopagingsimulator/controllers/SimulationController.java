@@ -3,8 +3,10 @@ package br.gbrl.sopagingsimulator.controllers;
 import br.gbrl.sopagingsimulator.Cache;
 import br.gbrl.sopagingsimulator.Main;
 import br.gbrl.sopagingsimulator.Views;
+import br.gbrl.sopagingsimulator.algorithms.NRU;
 import br.gbrl.sopagingsimulator.dtos.AlgorithmReportDTO;
 import br.gbrl.sopagingsimulator.dtos.AlgorithmReportsDTO;
+import br.gbrl.sopagingsimulator.enums.Algorithms;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
@@ -27,14 +29,11 @@ public class SimulationController {
     protected void initialize() {
         Main.addOnChageScreenListener((newScreen) -> {
             if (Main.CURRENT_VIEW.equals(Views.SIMULATION_VIEW)) {
-                System.out.println(Cache.algorithmSimulationRequest);
-
-                // TODO execultar algoritimos
                 List<AlgorithmReportDTO> algorithmReportList = new ArrayList<>();
-                algorithmReportList.add(new AlgorithmReportDTO("A1", 7, 300L));
-                algorithmReportList.add(new AlgorithmReportDTO("A2", 8, 350L));
-                algorithmReportList.add(new AlgorithmReportDTO("A3", 9, 800L));
-                algorithmReportList.add(new AlgorithmReportDTO("A4", 5, 150L));
+
+                if (Cache.algorithmSimulationRequest.contains(Algorithms.NRU))
+                    algorithmReportList.add(NRU.run(Cache.pages, Cache.qPags));
+
                 AlgorithmReportsDTO algorithmReports = new AlgorithmReportsDTO(algorithmReportList);
                 loadChartLackOfPages(algorithmReports);
                 loadChartTime(algorithmReports);
