@@ -3,6 +3,7 @@ package br.gbrl.sopagingsimulator.controllers;
 import br.gbrl.sopagingsimulator.Cache;
 import br.gbrl.sopagingsimulator.Main;
 import br.gbrl.sopagingsimulator.Views;
+import br.gbrl.sopagingsimulator.algorithms.Aging;
 import br.gbrl.sopagingsimulator.algorithms.NRU;
 import br.gbrl.sopagingsimulator.dtos.AlgorithmReportDTO;
 import br.gbrl.sopagingsimulator.dtos.AlgorithmReportsDTO;
@@ -33,6 +34,8 @@ public class SimulationController {
 
                 if (Cache.algorithmSimulationRequest.contains(Algorithms.NRU))
                     algorithmReportList.add(NRU.run(Cache.pages, Cache.qPags));
+                if (Cache.algorithmSimulationRequest.contains(Algorithms.AGING))
+                    algorithmReportList.add(Aging.run(Cache.pages, Cache.qPags));
 
                 AlgorithmReportsDTO algorithmReports = new AlgorithmReportsDTO(algorithmReportList);
                 loadChartLackOfPages(algorithmReports);
