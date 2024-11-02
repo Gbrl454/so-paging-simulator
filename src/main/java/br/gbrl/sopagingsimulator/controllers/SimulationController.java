@@ -5,7 +5,8 @@ import br.gbrl.sopagingsimulator.Main;
 import br.gbrl.sopagingsimulator.Views;
 import br.gbrl.sopagingsimulator.algorithms.Aging;
 import br.gbrl.sopagingsimulator.algorithms.Clock;
-import br.gbrl.sopagingsimulator.algorithms.NRU;
+import br.gbrl.sopagingsimulator.algorithms.Fifo;
+import br.gbrl.sopagingsimulator.algorithms.Nru;
 import br.gbrl.sopagingsimulator.dtos.AlgorithmReportDTO;
 import br.gbrl.sopagingsimulator.dtos.AlgorithmReportsDTO;
 import br.gbrl.sopagingsimulator.enums.Algorithms;
@@ -34,11 +35,13 @@ public class SimulationController {
                 List<AlgorithmReportDTO> algorithmReportList = new ArrayList<>();
 
                 if (Cache.algorithmSimulationRequest.contains(Algorithms.NRU))
-                    algorithmReportList.add(NRU.run(Cache.pages, Cache.qPags));
+                    algorithmReportList.add(Nru.run(Cache.pages, Cache.qPags));
                 if (Cache.algorithmSimulationRequest.contains(Algorithms.AGING))
                     algorithmReportList.add(Aging.run(Cache.pages, Cache.qPags));
                 if (Cache.algorithmSimulationRequest.contains(Algorithms.CLOCK))
                     algorithmReportList.add(Clock.run(Cache.pages, Cache.qPags));
+                if (Cache.algorithmSimulationRequest.contains(Algorithms.FIFO))
+                    algorithmReportList.add(Fifo.run(Cache.pages, Cache.qPags));
 
                 AlgorithmReportsDTO algorithmReports = new AlgorithmReportsDTO(algorithmReportList);
                 loadChartLackOfPages(algorithmReports);
