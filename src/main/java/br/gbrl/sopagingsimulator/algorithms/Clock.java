@@ -1,19 +1,18 @@
 package br.gbrl.sopagingsimulator.algorithms;
 
+import br.gbrl.sopagingsimulator.Main;
 import br.gbrl.sopagingsimulator.dtos.AlgorithmReportDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Clock {
+public class Clock extends Algorithm {
     private final List<Integer> memory;
     private final int[] pages;
     private final int capacity;
     private final int[] clockHand;
     private final boolean[] referenced;
     private int pointer;
-    private int pageFaults;
-    private Long timeSimulate;
 
     public Clock(int[] pages, int capacity) {
         this.pages = pages;
@@ -26,14 +25,14 @@ public class Clock {
         this.simulate();
     }
 
-    public static AlgorithmReportDTO run(List<Integer> pages, int capacity) {
-        Clock clock = new Clock(pages.stream().mapToInt(Integer::intValue).toArray(), capacity);
-        return new AlgorithmReportDTO("Clock", clock.getPageFaults(), clock.getTimeSimulate());
+    public AlgorithmReportDTO run() {
+        return new AlgorithmReportDTO("Clock", this.getPageFaults(), this.getTimeSimulate());
     }
 
     private void simulate() {
         this.timeSimulate = System.currentTimeMillis();
         for (int page : this.pages) {
+            Main.sleep();
             if (!memory.contains(page)) {
                 if (memory.size() < capacity) {
                     memory.add(page);
@@ -43,6 +42,7 @@ public class Clock {
                     pageFaults++;
                 } else {
                     while (true) {
+                        Main.sleep();
                         if (!referenced[pointer]) {
                             memory.set(pointer, page);
                             clockHand[pointer] = page;
@@ -59,13 +59,5 @@ public class Clock {
             } else referenced[memory.indexOf(page)] = true;
         }
         this.timeSimulate -= System.currentTimeMillis();
-    }
-
-    public Long getTimeSimulate() {
-        return timeSimulate;
-    }
-
-    public int getPageFaults() {
-        return pageFaults;
     }
 }

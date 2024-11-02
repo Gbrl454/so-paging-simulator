@@ -1,17 +1,16 @@
 package br.gbrl.sopagingsimulator.algorithms;
 
+import br.gbrl.sopagingsimulator.Main;
 import br.gbrl.sopagingsimulator.dtos.AlgorithmReportDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Aging {
+public class Aging extends Algorithm {
     private final int[] pages;
     private final int capacity;
     private final List<Integer> memory;
     private final int[] ageBits;
-    private int pageFaults;
-    private Long timeSimulate;
 
     public Aging(int[] pages, int capacity) {
         this.pages = pages;
@@ -22,14 +21,14 @@ public class Aging {
         this.simulate();
     }
 
-    public static AlgorithmReportDTO run(List<Integer> pages, int capacity) {
-        Aging aging = new Aging(pages.stream().mapToInt(Integer::intValue).toArray(), capacity);
-        return new AlgorithmReportDTO("Aging", aging.getPageFaults(), aging.getTimeSimulate());
+    public AlgorithmReportDTO run() {
+        return new AlgorithmReportDTO("Aging", this.getPageFaults(), this.getTimeSimulate());
     }
 
     private void simulate() {
         this.timeSimulate = System.currentTimeMillis();
         for (int page : this.pages) {
+            Main.sleep();
             if (!memory.contains(page)) {
                 if (memory.size() < capacity) memory.add(page);
                 else memory.set(findPageToReplace(), page);
@@ -55,16 +54,9 @@ public class Aging {
 
     private void updateAgeBits() {
         for (int i = 0; i < memory.size(); i++) {
+            Main.sleep();
             ageBits[i] >>= 1;
             if (memory.contains(memory.get(i))) ageBits[i] |= 0x80000000;
         }
-    }
-
-    public Long getTimeSimulate() {
-        return timeSimulate;
-    }
-
-    public int getPageFaults() {
-        return pageFaults;
     }
 }

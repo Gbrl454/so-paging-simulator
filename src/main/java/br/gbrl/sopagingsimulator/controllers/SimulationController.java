@@ -34,14 +34,16 @@ public class SimulationController {
             if (Main.CURRENT_VIEW.equals(Views.SIMULATION_VIEW)) {
                 List<AlgorithmReportDTO> algorithmReportList = new ArrayList<>();
 
+                int[] pages = Cache.pages.stream().mapToInt(Integer::intValue).toArray();
+
                 if (Cache.algorithmSimulationRequest.contains(Algorithms.NRU))
-                    algorithmReportList.add(Nru.run(Cache.pages, Cache.qPags));
+                    algorithmReportList.add(new Nru(pages, Cache.qPags).run());
                 if (Cache.algorithmSimulationRequest.contains(Algorithms.AGING))
-                    algorithmReportList.add(Aging.run(Cache.pages, Cache.qPags));
+                    algorithmReportList.add(new Aging(pages, Cache.qPags).run());
                 if (Cache.algorithmSimulationRequest.contains(Algorithms.CLOCK))
-                    algorithmReportList.add(Clock.run(Cache.pages, Cache.qPags));
+                    algorithmReportList.add(new Clock(pages, Cache.qPags).run());
                 if (Cache.algorithmSimulationRequest.contains(Algorithms.FIFO))
-                    algorithmReportList.add(Fifo.run(Cache.pages, Cache.qPags));
+                    algorithmReportList.add(new Fifo(pages, Cache.qPags).run());
 
                 AlgorithmReportsDTO algorithmReports = new AlgorithmReportsDTO(algorithmReportList);
                 loadChartLackOfPages(algorithmReports);

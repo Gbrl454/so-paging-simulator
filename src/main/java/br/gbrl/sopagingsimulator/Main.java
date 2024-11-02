@@ -3,7 +3,6 @@ package br.gbrl.sopagingsimulator;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class Main extends javafx.application.Application {
@@ -19,6 +18,14 @@ public class Main extends javafx.application.Application {
         alert.setContentText(message);
 
         alert.showAndWait();
+    }
+
+    public static void sleep() {
+        try {
+            Thread.sleep(0,500);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public static void changeViews(Views view) {

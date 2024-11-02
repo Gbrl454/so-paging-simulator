@@ -1,23 +1,22 @@
 package br.gbrl.sopagingsimulator.algorithms;
 
+import br.gbrl.sopagingsimulator.Main;
 import br.gbrl.sopagingsimulator.dtos.AlgorithmReportDTO;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class NRU {
+public class Nru extends Algorithm {
     private final int[] pages;
     private final int capacity;
     private final List<Integer> memory;
     private final int[] referenceBits;
     private final int[] dirtyBits;
     private final int resetInterval = 5;
-    private int pageFaults;
     private int accessCounter;
-    private Long timeSimulate;
 
-    public NRU(int[] pages, int capacity) {
+    public Nru(int[] pages, int capacity) {
         this.pages = pages;
         this.capacity = capacity;
         this.memory = new ArrayList<>();
@@ -28,14 +27,14 @@ public class NRU {
         this.simulate();
     }
 
-    public static AlgorithmReportDTO run(List<Integer> pages, int capacity) {
-        NRU nru = new NRU(pages.stream().mapToInt(Integer::intValue).toArray(), capacity);
-        return new AlgorithmReportDTO("NRU", nru.getPageFaults(), nru.getTimeSimulate());
+    public AlgorithmReportDTO run() {
+        return new AlgorithmReportDTO("NRU", this.getPageFaults(), this.getTimeSimulate());
     }
 
     private void simulate() {
         this.timeSimulate = System.currentTimeMillis();
         for (int page : this.pages) {
+            Main.sleep();
             if (!this.memory.contains(page)) {
                 if (this.memory.size() < this.capacity) this.memory.add(page);
                 else this.memory.set(this.findPageToReplace(), page);
@@ -53,6 +52,7 @@ public class NRU {
         int minClass = Integer.MAX_VALUE;
         int index = -1;
         for (int i = 0; i < this.memory.size(); i++) {
+            Main.sleep();
             int currentClass = (this.referenceBits[i] << 1) | this.dirtyBits[i];
             if (currentClass < minClass) {
                 minClass = currentClass;
@@ -64,15 +64,8 @@ public class NRU {
 
     private void updateReferenceBits(int newPage) {
         for (int i = 0; i < this.memory.size(); i++) {
-            if (this.memory.get(i) == newPage) this.referenceBits[i] = 1; // Marca como recentemente usada
+            Main.sleep();
+            if (this.memory.get(i) == newPage) this.referenceBits[i] = 1;
         }
-    }
-
-    public int getPageFaults() {
-        return this.pageFaults;
-    }
-
-    public long getTimeSimulate() {
-        return this.timeSimulate * (-1);
     }
 }
